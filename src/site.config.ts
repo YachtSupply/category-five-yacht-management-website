@@ -39,8 +39,8 @@ export const siteConfig = {
 
   // ── Boatwork integration ──────────────────────────────────
   boatwork: {
-    profileSlug: 'template',
-    profileId: '', // UUID — set during provisioning, permanent link to profile
+    profileSlug: 'category-five-yacht-management',
+    profileId: '2bd14133-823b-4eff-8b22-f6366567d984', // UUID — set during provisioning, permanent link to profile
     profileUrl: 'https://boatwork.co/pro/template/',
     logoUrl: 'https://boatwork.co/images/boatwork-logo.png',
     useLiveReviews: false,
