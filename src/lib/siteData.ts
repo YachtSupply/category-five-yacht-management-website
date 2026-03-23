@@ -43,9 +43,17 @@ function loadGeneratedContent(profile: BoatworkProfile): GeneratedContent {
 
 // ---------- Return type ----------
 
-export type SiteData = Omit<typeof siteConfig, 'hoursOfOperation' | 'services'> & {
+export type SiteData = Omit<typeof siteConfig, 'hoursOfOperation' | 'services' | 'boatwork'> & {
   badge: BoatworkProfile['badge'];
   badges: BoatworkProfile['badges'];
+  boatwork: {
+    profileSlug: string;
+    profileId: string;
+    profileUrl: string;
+    logoUrl: string;
+    useLiveReviews: boolean;
+    staticReviews: BoatworkProfile['reviews'];
+  };
   hoursOfOperation: Record<string, string> | null;
   serviceAreaTitle: string;
   yearEstablished: number | null;
@@ -110,7 +118,30 @@ export const getSiteData = cache(async (): Promise<SiteData> => {
   const profile = await fetchBoatworkProfile(PROFILE_SLUG, PROFILE_ID || undefined);
 
   // If API is down, return static config unchanged
-  if (!profile) return { ...siteConfig, badge: null, badges: [], serviceAreaTitle: 'Our Service Area', yearEstablished: null, websiteTheme: 'navy-gold', averageResponseTime: null, specialties: [] };
+  if (!profile) {
+    // Normalize static reviews to the enriched shape expected by SiteData
+    const fallbackReviews: BoatworkProfile['reviews'] = siteConfig.boatwork.staticReviews.map((r) => ({
+      id: ('id' in r ? (r as Record<string, unknown>).id as string | null : null),
+      author: r.author,
+      rating: r.rating,
+      text: r.text,
+      date: r.date,
+      isVerified: ('isVerified' in r ? !!(r as Record<string, unknown>).isVerified : false),
+      response: ('response' in r ? (r as Record<string, unknown>).response as string | null : null),
+      responseDate: ('responseDate' in r ? (r as Record<string, unknown>).responseDate as string | null : null),
+    }));
+    return {
+      ...siteConfig,
+      badge: null,
+      badges: [],
+      boatwork: { ...siteConfig.boatwork, staticReviews: fallbackReviews },
+      serviceAreaTitle: 'Our Service Area',
+      yearEstablished: null,
+      websiteTheme: 'navy-gold',
+      averageResponseTime: null,
+      specialties: [],
+    };
+  }
 
   // Load AI-generated content from pre-build JSON (written by scripts/generate-content.ts)
   const ai = loadGeneratedContent(profile);
