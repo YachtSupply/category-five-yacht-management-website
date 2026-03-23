@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { GiAnchor } from 'react-icons/gi';
-import { FiInstagram, FiFacebook, FiCamera, FiVideo, FiMessageSquare, FiStar, FiSun } from 'react-icons/fi';
+import { FiInstagram, FiFacebook, FiCamera, FiMessageSquare, FiStar, FiSun } from 'react-icons/fi';
 import { SectionWrapper } from '@/components/shared';
 import { getSiteData } from '@/lib/siteData';
 
@@ -19,13 +19,13 @@ const pillars = [
     icon: <FiCamera size={22} />,
     label: 'The Work',
     pct: '40%',
-    description: 'Real job photos and videos. Before/afters, teak restoration, haulouts, engine bays. No stock photos — ever.',
+    description: 'Real job photos and videos. Before/afters, project walkthroughs, and completed work. No stock photos — ever.',
   },
   {
     icon: <FiMessageSquare size={22} />,
     label: 'Education',
     pct: '25%',
-    description: 'Quick tips for yacht owners. Positions us as the expert in South Florida waters and builds trust before they call.',
+    description: 'Quick tips for yacht owners. Positions us as the expert and builds trust before they call.',
   },
   {
     icon: <FiStar size={22} />,
@@ -37,61 +37,74 @@ const pillars = [
     icon: <FiSun size={22} />,
     label: 'Lifestyle',
     pct: '15%',
-    description: 'Fort Lauderdale marina life, sunsets, and the Florida boating lifestyle. Aspirational and authentic.',
+    description: 'Marina life, sunsets, and the boating lifestyle. Aspirational and authentic.',
   },
 ];
 
-const calendar = [
-  {
-    day: 'Monday',
-    platforms: ['instagram', 'facebook'],
-    format: 'Before & After Photo',
-    copy: 'Teak doesn\'t lie. Before and after from a recent project in Fort Lauderdale. This is what 20 hours of hand-sanding, bleaching, and oiling looks like. Worth every minute.',
-    tags: '#YachtsEtc #TekDecks #FortLauderdale #YachtMaintenance',
-  },
-  {
-    day: 'Tuesday',
-    platforms: ['instagram'],
-    format: 'Video Reel',
-    copy: 'Your yacht deserves this level of attention. See what we do for our clients. Link in bio to request a quote.',
-    tags: '#YachtManagement #SouthFlorida #MarineServices',
-  },
-  {
-    day: 'Wednesday',
-    platforms: ['facebook'],
-    format: 'Educational Post',
-    copy: '3 things every South Florida boat owner should check before summer season:\n\n1. Through-hulls and seacocks — can you close them?\n2. Zincs — are they depleted?\n3. Running gear — any growth or dings on the prop?\n\nWe handle all of this. Call 1-305-332-6015.',
-    tags: '#YachtMaintenance #FortLauderdale #BoatCare',
-  },
-  {
-    day: 'Thursday',
-    platforms: ['instagram'],
-    format: 'Detail / Close-Up Photo',
-    copy: 'The details matter. Freshly refinished running gear on a recent haulout. Everything below the waterline protected and dialed in.',
-    tags: '#YachtDetailing #BottomPaint #FortLauderdaleYachts',
-  },
-  {
-    day: 'Friday',
-    platforms: ['instagram', 'facebook'],
-    format: 'Review Spotlight',
-    copy: '"Anniel\'s attention to detail is impeccable. His knowledge of a broad range of yacht systems is outstanding and he takes pride in his work. I know the boat is in great hands." — Jacob R. ⭐⭐⭐⭐⭐\n\nThis is why we do what we do.',
-    tags: '#ClientReview #Boatwork #YachtsEtc',
-  },
-  {
-    day: 'Saturday',
-    platforms: ['instagram'],
-    format: 'Lifestyle / Marina Shot',
-    copy: 'Another week on the water. Fort Lauderdale\'s marine community is something special. Proud to keep these vessels running.',
-    tags: '#FortLauderdale #MarineLife #YachtLife #SouthFlorida',
-  },
-  {
-    day: 'Sunday',
-    platforms: ['facebook'],
-    format: 'Service Spotlight',
-    copy: 'Did you know Yachts Etc. handles full yacht management programs? From routine maintenance to crew management to emergency repairs — one call, one team, everything handled. Serving Broward, Miami-Dade, Palm Beach, and Monroe counties.',
-    tags: '#YachtManagement #SouthFlorida #MarineServices',
-  },
-];
+function buildCalendar(name: string, phone: string, city: string) {
+  return [
+    {
+      day: 'Monday',
+      platforms: ['instagram', 'facebook'],
+      format: 'Before & After Photo',
+      copy: `Another transformation complete. Before and after from a recent project in ${city}. This is what dedication to craft looks like. Worth every minute.`,
+      tags: `#${name.replace(/\s+/g, '')} #${city.replace(/\s+/g, '')} #YachtMaintenance #MarineServices`,
+    },
+    {
+      day: 'Tuesday',
+      platforms: ['instagram'],
+      format: 'Video Reel',
+      copy: 'Your yacht deserves this level of attention. See what we do for our clients. Link in bio to request a quote.',
+      tags: '#YachtManagement #MarineServices #BoatMaintenance',
+    },
+    {
+      day: 'Wednesday',
+      platforms: ['facebook'],
+      format: 'Educational Post',
+      copy: `3 things every boat owner should check before the season:\n\n1. Through-hulls and seacocks — can you close them?\n2. Zincs — are they depleted?\n3. Running gear — any growth or dings on the prop?\n\nWe handle all of this. Call ${phone}.`,
+      tags: `#YachtMaintenance #${city.replace(/\s+/g, '')} #BoatCare`,
+    },
+    {
+      day: 'Thursday',
+      platforms: ['instagram'],
+      format: 'Detail / Close-Up Photo',
+      copy: 'The details matter. Freshly refinished running gear on a recent haulout. Everything below the waterline protected and dialed in.',
+      tags: `#YachtDetailing #BottomPaint #${city.replace(/\s+/g, '')}Yachts`,
+    },
+    {
+      day: 'Friday',
+      platforms: ['instagram', 'facebook'],
+      format: 'Review Spotlight',
+      copy: `See what our clients are saying about ${name} on Boatwork. Real reviews from real boat owners. ⭐⭐⭐⭐⭐\n\nThis is why we do what we do.`,
+      tags: `#ClientReview #Boatwork #${name.replace(/\s+/g, '')}`,
+    },
+    {
+      day: 'Saturday',
+      platforms: ['instagram'],
+      format: 'Lifestyle / Marina Shot',
+      copy: `Another week on the water. ${city}'s marine community is something special. Proud to keep these vessels running.`,
+      tags: `#${city.replace(/\s+/g, '')} #MarineLife #YachtLife #Boating`,
+    },
+    {
+      day: 'Sunday',
+      platforms: ['facebook'],
+      format: 'Service Spotlight',
+      copy: `Did you know ${name} handles full yacht management programs? From routine maintenance to emergency repairs — one call, one team, everything handled.`,
+      tags: '#YachtManagement #MarineServices #BoatManagement',
+    },
+  ];
+}
+
+/** Extract Instagram handle from URL, e.g. "https://instagram.com/foo" → "@foo" */
+function getInstagramHandle(url: string): string {
+  try {
+    const pathname = new URL(url).pathname.replace(/\/+$/, '');
+    const handle = pathname.split('/').pop();
+    return handle ? `@${handle}` : 'Instagram';
+  } catch {
+    return 'Instagram';
+  }
+}
 
 const platformIcon = (p: string) =>
   p === 'instagram'
@@ -100,6 +113,7 @@ const platformIcon = (p: string) =>
 
 export default async function SocialPage() {
   const siteData = await getSiteData();
+  const calendar = buildCalendar(siteData.name, siteData.phone, siteData.city);
   return (
     <>
       {/* Hero */}
@@ -118,7 +132,7 @@ export default async function SocialPage() {
             {siteData.social.instagram && (
               <a href={siteData.social.instagram} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 border border-gold/40 text-white px-5 py-2.5 hover:border-gold hover:bg-white/5 transition-all font-sans text-sm font-semibold">
-                <FiInstagram size={16} /> @yachts.etc
+                <FiInstagram size={16} /> {getInstagramHandle(siteData.social.instagram)}
               </a>
             )}
             {siteData.social.facebook && (
@@ -194,13 +208,13 @@ export default async function SocialPage() {
           </div>
           <h2 className="font-serif text-4xl font-bold text-navy mb-4">Weekly Content Calendar</h2>
           <p className="text-text-light font-sans max-w-xl mx-auto">
-            Sample week of content — copy written, platforms assigned, hashtags ready. Marina handles scheduling.
+            Sample week of content — copy written, platforms assigned, hashtags ready.
           </p>
         </div>
 
         <div className="space-y-px bg-cream-dark border border-cream-dark">
-          {calendar.map((item, i) => (
-            <div key={item.day} className={`bg-white p-6 sm:p-8 grid grid-cols-1 md:grid-cols-[140px_1fr] gap-6 items-start`}>
+          {calendar.map((item) => (
+            <div key={item.day} className="bg-white p-6 sm:p-8 grid grid-cols-1 md:grid-cols-[140px_1fr] gap-6 items-start">
               {/* Day + platforms */}
               <div>
                 <p className="font-serif text-xl font-bold text-navy mb-2">{item.day}</p>
